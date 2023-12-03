@@ -12,7 +12,6 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('post_type');
             $table->string('theme');
             $table->text('text');
             $table->foreignId('post_type_id')->constrained('post_types')->onUpdate('cascade')->onDelete('cascade');

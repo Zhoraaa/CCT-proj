@@ -57,14 +57,14 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{-- @route('forum') --}}">Форум</a>
+                    <a class="nav-link" href="{{ @route('forum') }}">Форум</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{-- @route('catalogue') --}}">Мерч</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{-- @route('account') --}}">Личный кабинет</a>
+                    <a class="nav-link" href="{{ @route('checkUser') }}">Личный кабинет</a>
                 </li>
             </ul>
         </div>

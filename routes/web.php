@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/post/new', function () {
-    return view('post.edit');
-})->name('post_new');
+Route::get('/post/new', [PostController::class, "postEditor"])->name('postNew');
+Route::get('/forum', [PostController::class, "allPosts"])->name('forum');
+Route::get('/post/{id}', [PostController::class, "seePost"])->name('seePost');
 Route::post('/post/save', [PostController::class, "postSave"])->name('savePost');
+
+Route::get('/user', [UserController::class, "checkUser"])->name("checkUser");
