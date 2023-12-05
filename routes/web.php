@@ -19,9 +19,10 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/post/new', [PostController::class, "postEditor"])->name('postNew');
+Route::get('/post', [PostController::class, "postEditor"])->name('postNew');
 Route::get('/forum', [PostController::class, "allPosts"])->name('forum');
 Route::get('/post/{id}', [PostController::class, "seePost"])->name('seePost');
 Route::post('/post/save', [PostController::class, "postSave"])->name('savePost');
 
 Route::get('/user', [UserController::class, "checkUser"])->name("checkUser");
+Route::post('/user/new', [UserController::class, "signUp"])->name("signUp");
