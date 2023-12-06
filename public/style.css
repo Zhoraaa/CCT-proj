@@ -10,7 +10,7 @@
 }
 
 /* Forms */
-form {
+.form-auth {
     display: flex;
     flex-direction: column;
     gap: 10px

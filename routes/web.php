@@ -19,10 +19,16 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/post', [PostController::class, "postEditor"])->name('postNew');
+Route::get('/post', [PostController::class, "postEditor"])->middleware('auth')->name('postNew');
 Route::get('/forum', [PostController::class, "allPosts"])->name('forum');
 Route::get('/post/{id}', [PostController::class, "seePost"])->name('seePost');
-Route::post('/post/save', [PostController::class, "postSave"])->name('savePost');
+Route::post('/post/{id}/edit', [PostController::class, "postEdit"])->name('postEdit');
+Route::post('/post/{id}/delete', [PostController::class, "postDelete"])->name('postDelete');
+Route::post('/post/save', [PostController::class, "postSave"])->middleware('auth')->name('savePost');
 
-Route::get('/user', [UserController::class, "checkUser"])->name("checkUser");
+Route::get('/user', function () { return view('user.perArea'); })->name("user");
+Route::get('/user/auth', function () { return view('user.authPage'); })->middleware('guest')->name("auth");
+Route::get('/user/reg', function () { return view('user.regPage'); })->middleware('guest')->name("reg");
+Route::post('/user/exit', [UserController::class, "logOut"])->middleware('auth')->name("logout");
 Route::post('/user/new', [UserController::class, "signUp"])->name("signUp");
+Route::post('/user/auth', [UserController::class, "signIn"])->name("signIn");

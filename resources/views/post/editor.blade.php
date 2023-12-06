@@ -5,7 +5,7 @@
 @endsection
 
 @section('body')
-    <form action="{{ @route('savePost') }}" method="POST" class="border border-secondary rounded m-2 p-3">
+    <form action="{{ @route('savePost') }}" method="POST" class="border border-secondary rounded m-2 p-3 form-auth">
         @csrf
         <div class="form-block-wrapper border border-secondary rounded">
             <input type="text" name="theme" class="theme-inp" placeholder="Тема поста...">

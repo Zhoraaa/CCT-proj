@@ -4,33 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
     //
-    public function checkUser()
-    {
-        if (session('user')) {
-
+    public function user() {
+        // dd(session());
+        if(session('user')) {
         } else {
-            return view('user.signPage');
+            return route('user');
         }
     }
-    public function auth($userData)
-    {
-        $user = User::where('email', $userData->email)
-        ->where('password', Hash::make($userData->password))
-        ->first();
 
-        dd($user);
-    }
-    public function signIn(Request $request)
-    {
+    public function signIn(Request $userData) {
+        $validate = $userData->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6|max:32|regex:/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{6,32}$/',
+        ]);
 
+        if(Auth::attempt($userData->only('email', 'password'))) {
+            return redirect('user');
+        }
+
+        return back()->withInput()->withErrors([
+            'null' => 'Неверные данные'
+        ]);
     }
-    public function signUp(Request $userData)
-    {
+    public function signUp(Request $userData) {
         $validate = $userData->validate([
             'login' => 'required|regex:/^[A-Za-z0-9_]{3,16}$/|unique:users',
             'email' => 'required|email|unique:users',
@@ -41,17 +42,22 @@ class UserController extends Controller
         $user = User::create([
             'login' => $userData->login,
             'email' => $userData->email,
-            'password' => Hash::make($userData->password),
+            'password' => $userData->password,
         ]);
 
-        $this->auth($userData);
+        Auth::login($user);
 
-        return redirect(route('checkUser'));
+        return redirect(route('user'));
     }
 
-    public function signOut()
-    {
+    public function logOut(Request $request) {
+        Auth::logout();
 
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
 }

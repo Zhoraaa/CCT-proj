@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
-class PostController extends Controller
-{
+class PostController extends Controller {
     //
-    public function allPosts()
-    {
+    public function allPosts() {
         $posts = Post::paginate(10)->where('post_type_id', 1);
 
         return view("post.getAll", compact("posts"));
@@ -23,26 +23,35 @@ class PostController extends Controller
     public function postEditor() {
         return view("post.editor");
     }
-    public function postSave(Request $postRaw)
-    {
+    public function postSave(Request $postRaw) {
 
         $postData = $postRaw->validate([
-            "theme"=> "required",
-            "text"=> "required",
+            "theme" => "required",
+            "text" => "required",
         ]);
 
-        $post = new Post();
+        $post = Post::create([
+            'theme' => $postRaw->theme,
+            'text' => $postRaw->text,
+            'post_type_id' => 1,
+            'author_id' => Auth::id(),
+            'reply_to' => null,
+        ]);
 
-        $post->theme = $postData['theme'];
-        $post->text = $postData['text'];
-        $post->post_type_id = '1';
-        $post->author_id = '1';
-        $post->reply_to = null;
-
-        $post->save();
 
         return redirect()->route('forum');
+    }
 
+    public function postEdit(Request $id) {
+
+        
+        return redirect()->route("forum");
+    }
+    public function postDelete(Request $id) {
+        
+        $post = DB::table("posts")->where('id', id)->delete();
+
+        return redirect()->route("forum");
     }
 
 }

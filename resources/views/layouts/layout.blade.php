@@ -52,7 +52,8 @@
                     </a>
                     <div class="dropdown-menu bg-dark">
                         <a class="dropdown-item text-white hov-gray" href="{{-- @route('news') --}}">Новости</a>
-                        <a class="dropdown-item text-white hov-gray" href="{{-- @route('articles') --}}">Полезная информация</a>
+                        <a class="dropdown-item text-white hov-gray" href="{{-- @route('articles') --}}">Полезная
+                            информация</a>
                         <a class="dropdown-item text-white hov-gray" href="#">О нас</a>
                     </div>
                 </li>
@@ -62,10 +63,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{-- @route('catalogue') --}}">Мерч</a>
                 </li>
-
+                @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ @route('auth') }}">Вход</a>
+                    </li>
+                @endguest
+                @auth
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ @route('checkUser') }}">Личный кабинет</a>
+                    <a class="nav-link" href="{{ @route('user') }}">Личный кабинет</a>
                 </li>
+                    <li class="nav-item">
+                        <form action="{{ @route('logout') }}" method="POST">
+                            @csrf
+                            <button class="nav-link bg-dark border-0 " href="#">Выход</button>
+                        </form>
+                    </li>
+                @endauth
             </ul>
         </div>
     </nav>
