@@ -7,13 +7,12 @@
 @section('body')
     <div class="border border-secondary rounded m-2 p-3">
         @auth
-            @if (auth()->user()->id === $post->author_id)
+            @if (auth()->user()->id === $post->author_id || auth()->user()->role < 3)
                 <form action="{{ @route('postDelete', ['id' => $post->id]) }}" method="post">
                     @csrf
-                    <input type="text" value="{{ $post }}" disabled>
                     <button class="btn btn-danger">Удалить пост</button>
                 </form>
-                <form action="{{ @route('postEdit',['id' => $post->id]) }}" method="post">
+                <form action="{{ @route('postEdit', ['id' => $post->id]) }}" method="post">
                     @csrf
                     <button class="btn btn-secondary">Редактировать пост</button>
                 </form>
