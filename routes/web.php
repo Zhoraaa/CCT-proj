@@ -32,3 +32,4 @@ Route::get('/user/reg', function () { return view('user.regPage'); })->middlewar
 Route::post('/user/exit', [UserController::class, "logOut"])->middleware('auth')->name("logout");
 Route::post('/user/new', [UserController::class, "signUp"])->name("signUp");
 Route::post('/user/auth', [UserController::class, "signIn"])->name("signIn");
+//test
