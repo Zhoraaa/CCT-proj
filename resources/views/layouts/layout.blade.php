@@ -61,7 +61,7 @@
                     <a class="nav-link" href="{{ @route('forum') }}">Форум</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{-- @route('catalogue') --}}">Мерч</a>
+                    <a class="nav-link" href="{{ @route('shop') }}">Мерч</a>
                 </li>
                 @guest
                     <li class="nav-item">
