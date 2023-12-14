@@ -28,7 +28,7 @@
         });
     </script>
     {{-- Local --}}
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 
 <body>

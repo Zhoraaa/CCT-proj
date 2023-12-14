@@ -18,19 +18,23 @@ class PostController extends Controller
             "text" => "required",
         ]);
 
+        $postType = ($postRaw->reply_to) ? 2 : 1;
+        $postType = ($postRaw->post_type) ? $postRaw->post_type : $postType;
+
         if (!$postRaw->post_id) {
             $post_id = Post::insertGetId([
                 'theme' => $postRaw->theme,
                 'text' => $postRaw->text,
-                'post_type_id' => 1,
+                'post_type_id' => $postType,
                 'author_id' => Auth::id(),
-                'reply_to' => null,
+                'reply_to' => (!empty($postRaw->reply_to)) ? $postRaw->reply_to : null,
             ]);
         } else {
             $post = Post::find($postRaw->post_id)
                 ->update([
                     'theme' => $postRaw->theme,
                     'text' => $postRaw->text,
+                    'updated_at'
                 ]);
             $post_id = $postRaw->post_id;
         }
@@ -43,23 +47,34 @@ class PostController extends Controller
 
         return view("post.forum", compact("posts"));
     }
-    public function seePost($request)
+    public function seePost($id)
     {
+        $post = Post::where("id", $id)->first();
+        
+        $theme = ['firstPost' => $post];
 
-        $post = Post::where("id", $request)->first();
+        if ($post) {
+            $replies = optional($post->replies)->toArray();
+            $theme += ['replies' => $replies];
+        }
 
-        return view("post.only", compact("post"));
+        // dd($theme);
+
+        return view("post.only", compact("theme"));
     }
-    public function postEditor()
-    {
-        return view("post.editor");
-    }
-
-    public function postEdit(Request $request)
+    public function postEditor(Request $request)
     {
         $post = Post::find($request->id);
 
-        return view('post.editor', compact('post'));
+        $reply_to = $request->idToReply;
+
+        if ($reply_to) {
+            return view("post.editor", compact('reply_to'));
+        }
+
+        return view("post.editor", compact('post'));
+
+        // ИНН УКСИВТ: 027 401 001 3828 3749
     }
     public function postDelete(Request $request)
     {

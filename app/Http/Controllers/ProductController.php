@@ -10,60 +10,67 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     //
-    public function ProductSave(Request $ProductRaw)
+    public function productSave(Request $productRaw)
     {
 
-        $ProductData = $ProductRaw->validate([
+        $productData = $productRaw->validate([
             "theme" => "required",
             "text" => "required",
         ]);
 
-        if (!$ProductRaw->Product_id) {
-            $Product_id = Product::insertGetId([
-                'theme' => $ProductRaw->theme,
-                'text' => $ProductRaw->text,
-                'Product_type_id' => 1,
+        $productType = ($productRaw->reply_to) ? 2 : 1;
+        $productType = ($productRaw->product_type) ? $productRaw->product_type : $productType;
+
+        if (!$productRaw->product_id) {
+            $product_id = Product::insertGetId([
+                'theme' => $productRaw->theme,
+                'text' => $productRaw->text,
+                'product_type_id' => $productType,
                 'author_id' => Auth::id(),
-                'reply_to' => null,
+                'reply_to' => (!empty($productRaw->reply_to)) ? $productRaw->reply_to : null,
             ]);
         } else {
-            $Product = Product::find($ProductRaw->Product_id)
+            $product = Product::find($productRaw->product_id)
                 ->update([
-                    'theme' => $ProductRaw->theme,
-                    'text' => $ProductRaw->text,
+                    'theme' => $productRaw->theme,
+                    'text' => $productRaw->text,
+                    'updated_at'
                 ]);
-            $Product_id = $ProductRaw->Product_id;
+            $product_id = $productRaw->product_id;
         }
 
-        return redirect()->route('seeProduct', ['id' => $Product_id]);
+        return redirect()->route('seeproduct', ['id' => $product_id]);
     }
     public function allProducts()
     {
-        $Products = Product::paginate(10)->where('Product_type_id', 1);
+        $products = Product::paginate(10);
 
-        return view("Product.forum", compact("Products"));
+        return view("product.forum", compact("products"));
     }
-    public function seeProduct($request)
+    public function seeProduct($id)
     {
+        $product = Product::where("id", $id)->first();
+        
+        $theme = ['firstproduct' => $product];
 
-        $Product = Product::where("id", $request)->first();
+        if ($product) {
+            $replies = optional($product->replies)->toArray();
+            $theme += ['replies' => $replies];
+        }
 
-        return view("Product.only", compact("Product"));
+        // dd($theme);
+
+        return view("product.only", compact("theme"));
     }
-    public function ProductEditor()
+    public function productEditor(Request $request)
     {
-        return view("Product.editor");
-    }
+        $product = Product::find($request->id);
 
-    public function ProductEdit(Request $request)
-    {
-        $Product = Product::find($request->id);
-
-        return view('Product.editor', compact('Product'));
+        return view("product.editor", compact('product'));
     }
-    public function ProductDelete(Request $request)
+    public function productDelete(Request $request)
     {
-        $Product = DB::table("Products")->where('id', $request->id)->delete();
+        $product = DB::table("products")->where('id', $request->id)->delete();
 
         return redirect()->route("forum");
     }

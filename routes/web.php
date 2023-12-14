@@ -23,10 +23,11 @@ Route::get('/', function () {
 Route::get('/post', [PostController::class, "postEditor"])->middleware('auth')->name('postNew');
 Route::get('/forum', [PostController::class, "allPosts"])->name('forum');
 Route::get('/post/{id}', [PostController::class, "seePost"])->name('seePost');
-Route::post('/post/{id}/edit', [PostController::class, "postEdit"])->name('postEdit');
+Route::post('/post/{id}/edit', [PostController::class, "postEditor"])->name('postEdit');
 Route::post('/post/{id}/delete', [PostController::class, "postDelete"])->name('postDelete');
 Route::post('/post/save', [PostController::class, "postSave"])->middleware('auth')->name('savePost');
-Route::post('/post/reply-to/{id}', [PostController::class, "postSave"])->middleware('auth')->name('postReply');
+Route::get('/post/reply-to/{idToReply}', [PostController::class, "postEditor"])->middleware('auth')->name('postReply');
+Route::post('/post/reply-to/{idToReply}', [PostController::class, "postSave"])->middleware('auth')->name('postReply');
 
 Route::get('/user', function () { return view('user.perArea'); })->name("user");
 Route::get('/user/auth', function () { return view('user.authPage'); })->middleware('guest')->name("auth");
