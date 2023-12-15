@@ -10,33 +10,28 @@ use Illuminate\Support\Facades\DB;
 class ProductController extends Controller
 {
     //
-    public function productSave(Request $productRaw)
+    public function productSave(Request $request)
     {
-
-        $productData = $productRaw->validate([
-            "theme" => "required",
-            "text" => "required",
+        dd($request);
+        $productData = $request->validate([
+            "name" => "required|unique:products",
+            "description" => "required",
+            "cost" => "required|min:3|",
         ]);
 
-        $productType = ($productRaw->reply_to) ? 2 : 1;
-        $productType = ($productRaw->product_type) ? $productRaw->product_type : $productType;
-
-        if (!$productRaw->product_id) {
+        if (!$request->product_id) {
             $product_id = Product::insertGetId([
-                'theme' => $productRaw->theme,
-                'text' => $productRaw->text,
-                'product_type_id' => $productType,
-                'author_id' => Auth::id(),
-                'reply_to' => (!empty($productRaw->reply_to)) ? $productRaw->reply_to : null,
+                'theme' => $request->theme,
+                'text' => $request->text,
             ]);
         } else {
-            $product = Product::find($productRaw->product_id)
+            $product = Product::find($request->product_id)
                 ->update([
-                    'theme' => $productRaw->theme,
-                    'text' => $productRaw->text,
+                    'theme' => $request->theme,
+                    'text' => $request->text,
                     'updated_at'
                 ]);
-            $product_id = $productRaw->product_id;
+            $product_id = $request->product_id;
         }
 
         return redirect()->route('seeproduct', ['id' => $product_id]);

@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/post', [PostController::class, "postEditor"])->middleware('auth')->name('postNew');
+Route::post('/post', [PostController::class, "postEditor"])->middleware('auth')->name('postNew');
 Route::get('/forum', [PostController::class, "allPosts"])->name('forum');
 Route::get('/post/{id}', [PostController::class, "seePost"])->name('seePost');
 Route::post('/post/{id}/edit', [PostController::class, "postEditor"])->name('postEdit');
@@ -38,3 +38,4 @@ Route::post('/user/auth', [UserController::class, "signIn"])->name("signIn");
 
 Route::get('/shop', function() { return view('product.list'); })->name('shop');
 Route::post('/product', [ProductController::class, "productEditor"])->middleware("auth")->name("productNew");
+Route::post('/product/save', [ProductController::class, "productSave"])->middleware("auth")->name("productSave");
