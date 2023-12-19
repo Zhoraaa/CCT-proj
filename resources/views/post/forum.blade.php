@@ -6,10 +6,12 @@
 
 @section('body')
     <div class="border border-secondary rounded m-2 p-3">
-        <form href="{{ route('postNew') }}">
-            @csrf
-            <button class="btn btn-primary">Новый пост</button>
-        </form>
+        @auth
+            <form href="{{ route('postNew') }}">
+                @csrf
+                <button class="btn btn-primary">Новый пост</button>
+            </form>
+        @endauth
         @if (!empty($posts))
             @foreach ($posts as $post)
                 <div class="rounded border-dark">

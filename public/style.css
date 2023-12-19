@@ -2,15 +2,12 @@
     display: none;
 }
 
-/* Spacing */
-
-
 /* Elems */
 .hov-gray {
     transition: all 0.2s ease-in;
 }
 .hov-gray:hover {
-    background-color: hsla(0, 0%, 100%, 0.25);
+    background-color: rgba(0, 0, 0, 0.25);
 }
 
 /* Forms */
