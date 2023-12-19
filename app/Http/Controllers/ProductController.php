@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,23 +13,28 @@ class ProductController extends Controller
     //
     public function productSave(Request $request)
     {
-        dd($request);
+        // dd($request);
         $productData = $request->validate([
             "name" => "required|unique:products",
             "description" => "required",
-            "cost" => "required|min:3|",
+            "cost" => "required|min:1|",
         ]);
 
         if (!$request->product_id) {
             $product_id = Product::insertGetId([
-                'theme' => $request->theme,
-                'text' => $request->text,
+                'name' => $request->name,
+                'description' => $request->description,
+                'cost' => $request->cost,
+                'image' => 'default.png',
+                'type' => $request->product_type
             ]);
         } else {
             $product = Product::find($request->product_id)
                 ->update([
-                    'theme' => $request->theme,
-                    'text' => $request->text,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'cost' => $request->cost,
+                    'image' => 'default.png',
                     'updated_at'
                 ]);
             $product_id = $request->product_id;
@@ -60,8 +66,14 @@ class ProductController extends Controller
     public function productEditor(Request $request)
     {
         $product = Product::find($request->id);
+        $pTypes = ProductType::get()->all();
 
-        return view("product.editor", compact('product'));
+        $data = [
+            'product' => $product,
+            'pTypes' => $pTypes
+        ];
+
+        return view("product.editor", compact('data'));
     }
     public function productDelete(Request $request)
     {

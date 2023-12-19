@@ -18,11 +18,19 @@
             </textarea>
         </div>
         <div class="form-block-wrapper border border-secondary rounded">
-            <input type="number" name="cost" class="" placeholder="Тема поста..."
+            <input type="number" name="cost" class="" placeholder="Цена товара"
                 value="{{ isset($product) ? $product->cost : null }}">
         </div>
         <div class="form-block-wrapper border border-secondary rounded">
-            <input type="file" name="covers" multiple>
+            <input type="file" name="cover">
+        </div>
+        <div class="form-block-wrapper border border-secondary rounded">
+            <select name="product_type" id="">
+                <option value="" disabled>Выберите категорию</option>
+                @foreach ($data['pTypes'] as $pType)
+                    <option value="{{ $pType['id'] }}">{{ $pType['name'] }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="form-block-wrapper">
             <button type="submit" class="btn btn-primary">Опубликовать</button>

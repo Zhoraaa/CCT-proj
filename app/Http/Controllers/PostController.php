@@ -73,8 +73,6 @@ class PostController extends Controller
         }
 
         return view("post.editor", compact('post'));
-
-        // ИНН УКСИВТ: 027 401 001 3828 3749
     }
     public function postDelete(Request $request)
     {

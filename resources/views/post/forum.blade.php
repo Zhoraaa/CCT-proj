@@ -7,9 +7,9 @@
 @section('body')
     <div class="border border-secondary rounded m-2 p-3">
         @auth
-            <form href="{{ route('postNew') }}">
+            <form action="{{ @route('postNew') }}" method="post">
                 @csrf
-                <button class="btn btn-primary">Новый пост</button>
+                <button class="btn btn-primary" >Новый пост</button>
             </form>
         @endauth
         @if (!empty($posts))
