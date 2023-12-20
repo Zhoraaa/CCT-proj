@@ -9,7 +9,8 @@
         @csrf
         @php
             $product = $data['product'];
-            // dd($data['pTypes'][1]['id']);
+            // dd($product);
+            $active = null;
         @endphp
         <input type="text" class="hide" name="product_id" value="{{ isset($product) ? $product->id : null }}">
         <div class="form-block-wrapper border border-secondary rounded">
@@ -32,14 +33,14 @@
             <select name="product_type" id="">
                 <option value="" disabled>Выберите категорию</option>
                 @foreach ($data['pTypes'] as $pType)
-                    @php
-                        if ($pType['id'] == $product->type) {
-                            $active = 'active';
-                        } else {
-                            $active = null;
-                        }
-                    @endphp
-                    <option value="{{ $pType['id'] }}" {{ $active }}>{{ $pType['id'] }} {{ $pType['name'] }}
+                    @if ($product != null)
+                        @php
+                            if ($pType['id'] == $product->type) {
+                                $active = 'active';
+                            }
+                        @endphp
+                    @endif
+                    <option value="{{ $pType['id'] }}" {{ $active }}>{{ $pType['name'] }}
                     </option>
                 @endforeach
             </select>

@@ -31,7 +31,7 @@
                     <form class="modal-content" method="GET" action="{{ route('shop') }}">
                         @csrf
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Фильтрация</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -47,8 +47,8 @@
                                 <option value="created_at">По дате добавления</option>
                             </select>
                             <select name="sequence" id="">
-                                <option value="asc">Убывание</option>
-                                <option value="desc">Возрастание</option>
+                                <option value="desc">Убывание</option>
+                                <option value="asc">Возрастание</option>
                             </select>
                         </div>
                         <div class="modal-footer">
@@ -67,7 +67,7 @@
                     <h3>{{ $product->name }}</h3>
                 </a>
                 <p>{{ $product->cost }}₽</p>
-                <p>{{ $product->type }}</p>
+                {{-- <p>{{ $product->category }}</p> --}}
             </div>
         @endforeach
     </div>

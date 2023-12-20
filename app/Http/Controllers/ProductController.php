@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -45,8 +44,20 @@ class ProductController extends Controller
     }
     public function allProducts(Request $request)
     {
-        // dd($request->all());
-        $products = Product::paginate(10);
+
+        if ($request->filled('_token')) {
+            $products = Product::paginate(10);
+        } else {
+            $types = array_keys($request->except('_token', 'order_by', 'sequence'));
+
+            $products = DB::table('products')
+                ->select()
+                ->whereIn('type', $types)
+                ->orderBy($request->order_by, $request->sequence)
+                ->paginate(1);
+        }
+
+
         $types = ProductType::all();
 
         $data = [
