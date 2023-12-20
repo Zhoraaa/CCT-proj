@@ -69,9 +69,17 @@
                     </li>
                 @endguest
                 @auth
+                @if (auth()->user()->role === 1)
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ @route('user') }}">Личный кабинет</a>
+                    <a class="nav-link" href="{{ @route('usrRedaction') }}">Назначение модераторов</a>
                 </li>
+                @endif
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ @route('cart') }}">Корзина</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ @route('user') }}">Личный кабинет</a>
+                    </li>
                     <li class="nav-item">
                         <form action="{{ @route('logout') }}" method="POST">
                             @csrf

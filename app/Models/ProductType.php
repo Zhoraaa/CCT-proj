@@ -10,4 +10,5 @@ class ProductType extends Model
     use HasFactory;
 
     
+    public $timestamps = false;
 }

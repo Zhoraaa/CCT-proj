@@ -19,12 +19,17 @@ class ProductController extends Controller
         //     "cost" => "required|min:1|",
         // ]);
         // dd($request->all());
+
+        $fileName = time().'.'.$request->file('cover')->extension();
+        $imagePath = $request->file('cover')->storeAs('public/imgs/products', $fileName);
+        // dd($fileName);
+
         if (!$request->product_id) {
             $product_id = Product::insertGetId([
                 'name' => $request->name,
                 'description' => $request->description,
                 'cost' => $request->cost,
-                'image' => 'default.png',
+                'image' => $fileName,
                 'type' => $request->product_type
             ]);
         } else {
@@ -33,7 +38,7 @@ class ProductController extends Controller
                     'name' => $request->name,
                     'description' => $request->description,
                     'cost' => $request->cost,
-                    'image' => 'default.png',
+                    'image' => $fileName,
                     'type' => $request->product_type,
                     'updated_at'
                 ]);
@@ -45,7 +50,7 @@ class ProductController extends Controller
     public function allProducts(Request $request)
     {
 
-        if ($request->filled('_token')) {
+        if (!$request->filled('_token')) {
             $products = Product::paginate(10);
         } else {
             $types = array_keys($request->except('_token', 'order_by', 'sequence'));
@@ -54,7 +59,7 @@ class ProductController extends Controller
                 ->select()
                 ->whereIn('type', $types)
                 ->orderBy($request->order_by, $request->sequence)
-                ->paginate(1);
+                ->paginate(10);
         }
 
 
@@ -92,6 +97,6 @@ class ProductController extends Controller
     {
         $product = DB::table("products")->where('id', $request->id)->delete();
 
-        return redirect()->route("catalogue");
+        return redirect()->route("shop");
     }
 }

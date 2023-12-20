@@ -5,7 +5,8 @@
 @endsection
 
 @section('body')
-    <form action="{{ @route('productSave') }}" method="POST" class="border border-secondary rounded m-2 p-3 form-auth">
+    <form action="{{ @route('productSave') }}" method="POST" enctype="multipart/form-data"
+        class="border border-secondary rounded m-2 p-3 form-auth">
         @csrf
         @php
             $product = $data['product'];

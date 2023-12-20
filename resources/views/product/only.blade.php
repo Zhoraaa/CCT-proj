@@ -22,6 +22,7 @@
         @endauth
         <h1>{{ $product->name }}</h1>
         <span>{{ $product->category }}</span>
+        <img src="{{ asset('storage/imgs/products/'.$product->image) }}" alt="Изображение продукта">
         <span>{!! $product->description !!}</span>
         <h4>{{ $product->cost }}₽</h4>
 

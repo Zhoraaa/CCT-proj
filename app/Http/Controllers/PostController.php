@@ -43,14 +43,21 @@ class PostController extends Controller
     }
     public function allPosts()
     {
-        $posts = Post::paginate(10)->where('post_type_id', 1);
+        $posts = Post::join('users', 'posts.author_id', '=', 'users.id')
+            ->select('posts.*', 'users.login as author')
+            ->where('post_type_id', 1)
+            ->paginate(10);
+        // dd($posts);
 
         return view("post.forum", compact("posts"));
     }
     public function seePost($id)
     {
-        $post = Post::where("id", $id)->first();
-        
+        $post = Post::join('users', 'posts.author_id', '=', 'users.id')
+            ->select('posts.*', 'users.login as author')
+            ->where("posts.id", $id)
+            ->first();
+
         $theme = ['firstPost' => $post];
 
         if ($post) {

@@ -33,17 +33,22 @@
             <a href="{{ @route('seePost', ['id' => $post->reply_to]) }}">К родительской ветке</a>
             <hr>
         @endif
-        <h1 class="text-secondary">{{ $post->theme }}</h1>
+        <h1>
+            {{ $post->theme }}
+            <span class="text-secondary font-weight-light font-italic">({{ $post['author'] }})</span>
+        </h1>
         <span>{!! $post->text !!}</span>
     </div>
 
     @if ($replies)
         <div class="m-2 p-3">
-            <h4 class="text-primary">Ветка:</h4>
+            <h4>Ветка:</h4>
             @foreach ($replies as $reply)
-                <div class="border border-secondary rounded m-3 p-2">
-                    <b class="text-secondary"><a
-                            href="{{ @route('seePost', ['id' => $reply['id']]) }}">{{ $reply['theme'] }}</a></b>
+                <div class="border border-secondary rounded m-2 p-3">
+                    <h4 class="text-secondary">
+                        <a href="{{ @route('seePost', ['id' => $reply['id']]) }}">{{ $reply['theme'] }}</a>
+                        <span class="text-secondary font-weight-light font-italic">({{ $reply['author'] }})</span>
+                    </h4>
                     <hr>
                     <p>{!! $reply['text'] !!}</p>
                 </div>

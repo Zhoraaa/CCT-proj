@@ -23,8 +23,12 @@
             <button type="button" class="btn btn-secondary m-2" data-toggle="modal" data-target="#exampleModal">
                 Фильтры
             </button>
+            <hr>
 
-            <!-- Modal -->
+            <div class="m-2">
+                {{ $products->links() }}
+            </div>
+
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -70,5 +74,10 @@
                 {{-- <p>{{ $product->category }}</p> --}}
             </div>
         @endforeach
+
+
+        <div class="m-2">
+            {{ $products->links() }}
+        </div>
     </div>
 @endsection

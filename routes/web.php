@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
@@ -45,4 +46,10 @@ Route::get('/product/{id}', [ProductController::class, "seeProduct"])->name('see
 Route::post('/product/{id}/delete', [ProductController::class, "productDelete"])->name('productDelete');
 Route::post('/product/{id}/edit', [ProductController::class, "productEditor"])->name('productEdit');
 
-Route::post('/product/{id}/addToCart', [BasketController::class, "addToCart"])->name('addToCart');
+Route::post('/product/{id}/addToCart', [BasketController::class, "addToCart"])->middleware('auth')->name('addToCart');
+Route::get('/cart', [BasketController::class, "getBasket"])->middleware('auth')->name('cart');
+Route::post('/cart/exclude', [BasketController::class, "basketExclude"])->middleware('auth')->name('basketExclude');
+Route::post('/cart/pay', [BasketController::class, "payBasket"])->middleware('auth')->name('payBasket');
+Route::post('/order/{id}/get', [BasketController::class, "getOrder"])->middleware('auth')->name('getOrder');
+
+Route::get('/admin/usrRedaction', [AdminController::class, "usrRedaction"])->middleware('auth')->name('usrRedaction');

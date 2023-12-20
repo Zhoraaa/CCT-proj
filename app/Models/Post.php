@@ -15,18 +15,8 @@ class Post extends Model
 
     public function replies()
     {
-        return $this->hasMany(Post::class, 'reply_to');
-    }
-
-    public function author()
-    {
-        return $this->belongsTo(User::class, 'author_id');
-    }
-    public function __get($key)
-    {
-        if ($key == 'author') {
-            return $this->author()->first()->login;
-        }
-        return parent::__get($key);
+        return $this->hasMany(Post::class, 'reply_to')
+            ->join('users', 'posts.author_id', '=', 'users.id')
+            ->select('posts.*', 'users.login as author');
     }
 }
