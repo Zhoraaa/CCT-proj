@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BasketController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -29,13 +30,19 @@ Route::post('/post/save', [PostController::class, "postSave"])->middleware('auth
 Route::get('/post/reply-to/{idToReply}', [PostController::class, "postEditor"])->middleware('auth')->name('postReply');
 Route::post('/post/reply-to/{idToReply}', [PostController::class, "postSave"])->middleware('auth')->name('postReply');
 
-Route::get('/user', function () { return view('user.perArea'); })->name("user");
+Route::get('/user', function () { return view('user.perArea'); })->middleware('auth')->name("user");
 Route::get('/user/auth', function () { return view('user.authPage'); })->middleware('guest')->name("auth");
 Route::get('/user/reg', function () { return view('user.regPage'); })->middleware('guest')->name("reg");
 Route::post('/user/exit', [UserController::class, "logOut"])->middleware('auth')->name("logout");
 Route::post('/user/new', [UserController::class, "signUp"])->name("signUp");
 Route::post('/user/auth', [UserController::class, "signIn"])->name("signIn");
+Route::post('/user/changeBalance', [UserController::class, "changeBalance"])->name("changeBalance");
 
-Route::get('/shop', function() { return view('product.list'); })->name('shop');
+Route::get('/shop', [ProductController::class, "allProducts"])->name('shop');
 Route::post('/product', [ProductController::class, "productEditor"])->middleware("auth")->name("productNew");
 Route::post('/product/save', [ProductController::class, "productSave"])->middleware("auth")->name("productSave");
+Route::get('/product/{id}', [ProductController::class, "seeProduct"])->name('seeProduct');
+Route::post('/product/{id}/delete', [ProductController::class, "productDelete"])->name('productDelete');
+Route::post('/product/{id}/edit', [ProductController::class, "productEditor"])->name('productEdit');
+
+Route::post('/product/{id}/addToCart', [BasketController::class, "addToCart"])->name('addToCart');

@@ -14,12 +14,12 @@ class ProductController extends Controller
     public function productSave(Request $request)
     {
         // dd($request);
-        $productData = $request->validate([
-            "name" => "required|unique:products",
-            "description" => "required",
-            "cost" => "required|min:1|",
-        ]);
-
+        // $productData = $request->validate([
+        //     "name" => "required|unique:products",
+        //     "description" => "required",
+        //     "cost" => "required|min:1|",
+        // ]);
+        // dd($request->all());
         if (!$request->product_id) {
             $product_id = Product::insertGetId([
                 'name' => $request->name,
@@ -35,38 +35,40 @@ class ProductController extends Controller
                     'description' => $request->description,
                     'cost' => $request->cost,
                     'image' => 'default.png',
+                    'type' => $request->product_type,
                     'updated_at'
                 ]);
             $product_id = $request->product_id;
         }
 
-        return redirect()->route('seeproduct', ['id' => $product_id]);
+        return redirect()->route('seeProduct', ['id' => $product_id]);
     }
-    public function allProducts()
+    public function allProducts(Request $request)
     {
+        // dd($request->all());
         $products = Product::paginate(10);
+        $types = ProductType::all();
 
-        return view("product.forum", compact("products"));
+        $data = [
+            'products' => $products,
+            'types' => $types,
+        ];
+
+        return view("product.list", compact("data"));
     }
     public function seeProduct($id)
     {
         $product = Product::where("id", $id)->first();
-        
-        $theme = ['firstproduct' => $product];
 
-        if ($product) {
-            $replies = optional($product->replies)->toArray();
-            $theme += ['replies' => $replies];
-        }
+        // dd($product);
 
-        // dd($theme);
-
-        return view("product.only", compact("theme"));
+        return view("product.only", compact("product"));
     }
     public function productEditor(Request $request)
     {
         $product = Product::find($request->id);
         $pTypes = ProductType::get()->all();
+        // dd($pTypes);
 
         $data = [
             'product' => $product,
@@ -79,6 +81,6 @@ class ProductController extends Controller
     {
         $product = DB::table("products")->where('id', $request->id)->delete();
 
-        return redirect()->route("forum");
+        return redirect()->route("catalogue");
     }
 }

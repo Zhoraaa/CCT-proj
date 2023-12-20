@@ -7,7 +7,11 @@
 @section('body')
     <form action="{{ @route('productSave') }}" method="POST" class="border border-secondary rounded m-2 p-3 form-auth">
         @csrf
-        <input type="text" class="hide" name="post_id" value="{{ isset($product) ? $product->id : null }}">
+        @php
+            $product = $data['product'];
+            // dd($data['pTypes'][1]['id']);
+        @endphp
+        <input type="text" class="hide" name="product_id" value="{{ isset($product) ? $product->id : null }}">
         <div class="form-block-wrapper border border-secondary rounded">
             <input type="text" name="name" class="name-inp" placeholder="Наименование товара"
                 value="{{ isset($product) ? $product->name : null }}">
@@ -28,7 +32,15 @@
             <select name="product_type" id="">
                 <option value="" disabled>Выберите категорию</option>
                 @foreach ($data['pTypes'] as $pType)
-                    <option value="{{ $pType['id'] }}">{{ $pType['name'] }}</option>
+                    @php
+                        if ($pType['id'] == $product->type) {
+                            $active = 'active';
+                        } else {
+                            $active = null;
+                        }
+                    @endphp
+                    <option value="{{ $pType['id'] }}" {{ $active }}>{{ $pType['id'] }} {{ $pType['name'] }}
+                    </option>
                 @endforeach
             </select>
         </div>
