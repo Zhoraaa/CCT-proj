@@ -55,7 +55,7 @@
                     <tr>
                         <th scope="row">{{ $num++ }}</th>
                         <td><a href="{{ route('seeProduct', ['id' => $order->product_id]) }}">{{ $order->name }}</a></td>
-                        <td>{{ $order->cost }}</td>
+                        <td>{{ $order->cost }}₽</td>
                         <td>{{ $order->status }}</td>
                         <td>
                             <div class="d-flex">

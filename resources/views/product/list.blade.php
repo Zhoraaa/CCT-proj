@@ -24,11 +24,7 @@
                 Фильтры
             </button>
             <hr>
-
-            <div class="m-2">
-                {{ $products->links() }}
-            </div>
-
+            
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog" role="document">

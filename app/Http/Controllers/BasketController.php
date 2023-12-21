@@ -48,9 +48,10 @@ class BasketController extends Controller
         // dd($totalCost);
 
         if ($balance >= $totalCost) {
-            Auth::user()->update([
-                'balance' => $balance - $totalCost
-            ]);
+            Auth::user()
+                ->update([
+                    'balance' => $balance - $totalCost
+                ]);
 
             Basket::where('status', 1)
                 ->update(['status' => 2]);
@@ -75,6 +76,4 @@ class BasketController extends Controller
 
         return redirect()->route("cart");
     }
-
-    
 }

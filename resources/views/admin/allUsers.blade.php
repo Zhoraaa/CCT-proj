@@ -21,43 +21,61 @@
         </div>
     @endif
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Ник</th>
-                <th scope="col">Почта</th>
-                <th scope="col">Роль</th>
-                <th scope="col">Взаимодействие</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                $num = 1;
-            @endphp
-            @foreach ($users as $user)
+    <div class="border border-secondary rounded m-2 p-3">
+        <table class="table">
+            <thead>
                 <tr>
-                    <th scope="row">{{ $user->id }}</th>
-                    <td>{{ $user->login }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->role }}</td>
-                    <td>
-                        <form action="" method="post">
-                            @csrf
-                            <select name="" id="">
-                                <option value="" disabled>Кем назначить?</option>
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                @endforeach
-                            </select>
-                        </form>
-                        <form action="" method="post">
-                            @csrf
-                        </form>
-                    </td>
+                    <th scope="col">ID</th>
+                    <th scope="col">Ник</th>
+                    <th scope="col">Почта</th>
+                    <th scope="col">Роль</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Взаимодействие</th>
                 </tr>
-            @endforeach
-    </table>
+            </thead>
+            <tbody>
+                @php
+                    $num = 1;
+                @endphp
+                @foreach ($users as $user)
+                    <tr>
+                        <th scope="row">{{ $user->id }}</th>
+                        <td>{{ $user->login }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->role }}</td>
+                        <td>{{ $user->banned ? 'Забанен' : 'Обычный' }}</td>
+                        <td>
+                            <div class="d-flex">
+                                @if ($user->role === 'Игрок' && !$user->banned)
+                                    <form action="{{ route('doMod', ['id' => $user->id]) }}" method="post">
+                                        @csrf
+                                        <button class="btn btn-success m-2">Назначить модератором</button>
+                                    </form>
+                                @endif
+                                @if ($user->role === 'Модер')
+                                    <form action="{{ route('undoMod', ['id' => $user->id]) }}" method="post">
+                                        @csrf
+                                        <button class="btn btn-warning m-2">Разжаловать</button>
+                                    </form>
+                                @endif
+                                @if (!$user->banned && $user->role != 'Админ')
+                                    <form action="{{ route('ban', ['id' => $user->id]) }}" method="post">
+                                        @csrf
+                                        <button class="btn btn-danger m-2">Забанить</button>
+                                    </form>
+                                @endif
+                                @if ($user->banned)
+                                    <form action="{{ route('unban', ['id' => $user->id]) }}" method="post">
+                                        @csrf
+                                        <button class="btn btn-warning m-2">Разбанить</button>
+                                    </form>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+        </table>
+    </div>
 
     <div class="m-2">
         {{ $users->links() }}

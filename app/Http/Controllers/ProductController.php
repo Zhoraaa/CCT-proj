@@ -20,9 +20,10 @@ class ProductController extends Controller
         // ]);
         // dd($request->all());
 
+
         $fileName = time().'.'.$request->file('cover')->extension();
         $imagePath = $request->file('cover')->storeAs('public/imgs/products', $fileName);
-        // dd($fileName);
+        // dd($imagePath);
 
         if (!$request->product_id) {
             $product_id = Product::insertGetId([
@@ -51,7 +52,7 @@ class ProductController extends Controller
     {
 
         if (!$request->filled('_token')) {
-            $products = Product::paginate(10);
+            $products = Product::paginate(4);
         } else {
             $types = array_keys($request->except('_token', 'order_by', 'sequence'));
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->integer('balance')->nullable();
             $table->foreignId('role')->constrained('roles');
-            $table->foreignId('player_status')->constrained('player_statuses');
+            $table->tinyInteger('banned')->nullable()->default(0);
             $table->timestamps();
         });
     }

@@ -53,3 +53,7 @@ Route::post('/cart/pay', [BasketController::class, "payBasket"])->middleware('au
 Route::post('/order/{id}/get', [BasketController::class, "getOrder"])->middleware('auth')->name('getOrder');
 
 Route::get('/admin/usrRedaction', [AdminController::class, "usrRedaction"])->middleware('auth')->name('usrRedaction');
+Route::post('/admin/doMod/{id}', [AdminController::class, "doMod"])->middleware('auth')->name('doMod');
+Route::post('/admin/undoMod/{id}', [AdminController::class, "undoMod"])->middleware('auth')->name('undoMod');
+Route::post('/admin/ban/{id}', [AdminController::class, "ban"])->middleware('auth')->name('ban');
+Route::post('/admin/unban/{id}', [AdminController::class, "unban"])->middleware('auth')->name('unban');
