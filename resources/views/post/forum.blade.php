@@ -7,10 +7,12 @@
 @section('body')
     <div class="border border-secondary rounded m-2 p-3">
         @auth
-            <form action="{{ @route('postNew') }}" method="post">
-                @csrf
-                <button class="btn btn-primary m-2">Новый пост</button>
-            </form>
+            @if (!auth()->user()->banned)
+                <form action="{{ @route('postNew') }}" method="post">
+                    @csrf
+                    <button class="btn btn-primary m-2">Новый пост</button>
+                </form>
+            @endif
         @endauth
         <div class="m-2">
             {{ $posts->links() }}

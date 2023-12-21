@@ -18,6 +18,9 @@
                 {{ isset($post) ? $post->text : null }}
             </textarea>
         </div>
+        <div class="form-block-wrapper border border-secondary rounded">
+            <select name="" id=""></select>
+        </div>
         <div class="form-block-wrapper">
             <button type="submit" class="btn btn-primary">Опубликовать</button>
         </div>
