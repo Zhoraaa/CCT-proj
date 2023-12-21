@@ -11,14 +11,17 @@ class AdminController extends Controller
     //
     public function usrRedaction()
     {
-        $users = User::join('roles', 'users.role', '=', 'roles.id')
-            ->select('users.*', 'roles.name as role')
-            ->paginate(10);
+        $data['users'] = User::join('roles', 'users.role', '=', 'roles.id')
+        ->select('users.*', 'roles.name as role')
+        ->paginate(5);
 
-        // dd($data);
-        
+        $data['roles'] = DB::table('roles')
+        ->where('id', '<', 1)
+        ->get();
 
-        return view('admin.allUsers', compact('users'));
+        // dd($data);        
+
+        return view('admin.allUsers', compact('data'));
     }
 
     public function doMod(Request $request)

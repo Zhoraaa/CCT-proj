@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('balance')->nullable();
             $table->foreignId('role')->constrained('roles');
             $table->tinyInteger('banned')->nullable()->default(0);
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 

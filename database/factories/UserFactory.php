@@ -20,7 +20,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'balance' => $this->faker->numberBetween(0, 5000), 
             'role' => 3,
-            'player_status' => 1,
+            'banned' => 0,
         ];
     }
 }

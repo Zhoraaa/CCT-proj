@@ -13,6 +13,16 @@ class UserTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(25)->create();
+        User::factory()->create([
+            'login' => 'Admin',
+            'email' => 'admin@admin',
+            'email_verified_at' => null,
+            'password' => bcrypt('Admin1!'),
+            'remember_token' => null,
+            'balance' => 10000, 
+            'role' => 1,
+            'banned' => 0,
+        ]);
+        User::factory()->count(14)->create();
     }
 }

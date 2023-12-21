@@ -22,6 +22,9 @@
     @endif
 
     <div class="border border-secondary rounded m-2 p-3">
+        <div class="m-2">
+            {{ $users->links() }}
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -61,13 +64,13 @@
                                 @if (!$user->banned && $user->role != 'Админ')
                                     <form action="{{ route('ban', ['id' => $user->id]) }}" method="post">
                                         @csrf
-                                        <button class="btn btn-danger m-2">Забанить</button>
+                                        <button class="btn btn-dark m-2">Забанить</button>
                                     </form>
                                 @endif
                                 @if ($user->banned)
                                     <form action="{{ route('unban', ['id' => $user->id]) }}" method="post">
                                         @csrf
-                                        <button class="btn btn-warning m-2">Разбанить</button>
+                                        <button class="btn btn-danger m-2">Разбанить</button>
                                     </form>
                                 @endif
                             </div>
@@ -75,9 +78,8 @@
                     </tr>
                 @endforeach
         </table>
-    </div>
-
-    <div class="m-2">
-        {{ $users->links() }}
+        <div class="m-2">
+            {{ $users->links() }}
+        </div>
     </div>
 @endsection

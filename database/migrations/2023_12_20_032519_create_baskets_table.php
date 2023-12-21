@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('orderer_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('status')->constrained('statuses')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 
