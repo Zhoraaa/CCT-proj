@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Basket;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -47,8 +48,6 @@ class BasketController extends Controller
             $totalCost = $totalCost + $order->product_cost;
         }
 
-        
-
         // dd($totalCost);
 
         if ($balance >= $totalCost) {
@@ -60,6 +59,12 @@ class BasketController extends Controller
             Basket::where('status', 1)
                 ->update(['status' => 2]);
 
+            Order::create([
+                'track_number' => 'TRCK_' . time(),
+                'price' => $totalCost,
+                'monetized' => 0,
+                'orderer_id' => Auth::user()->id
+            ]);
 
             return redirect()->route('cart')->with('success', 'Оплата завершена');
         }
