@@ -4,6 +4,11 @@
     Администрирование
 @endsection
 
+@php
+    $users = $data['users'];
+    $roles = $data['roles'];
+@endphp
+
 @section('body')
     @if (session('success'))
         <div class="alert alert-success m-2" role="alert">
@@ -37,12 +42,23 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->role }}</td>
                     <td>
-                        Кнопки
+                        <form action="" method="post">
+                            @csrf
+                            <select name="" id="">
+                                <option value="" disabled>Кем назначить?</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                        </form>
+                        <form action="" method="post">
+                            @csrf
+                        </form>
                     </td>
                 </tr>
             @endforeach
     </table>
-    
+
     <div class="m-2">
         {{ $users->links() }}
     </div>

@@ -47,6 +47,7 @@ class UserController extends Controller
             'email' => $userData->email,
             'role' => 3,
             'password' => $userData->password,
+            'player_status' => 1
         ]);
 
         Auth::login($user);
