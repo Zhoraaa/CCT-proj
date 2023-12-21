@@ -46,6 +46,9 @@ class BasketController extends Controller
         foreach ($basket as $order) {
             $totalCost = $totalCost + $order->product_cost;
         }
+
+        
+
         // dd($totalCost);
 
         if ($balance >= $totalCost) {

@@ -13,7 +13,7 @@
         @php
             $product = $data['product'];
             // dd($product);
-            $active = null;
+            $selected = null;
         @endphp
         <input type="text" class="hide" name="product_id" value="{{ isset($product) ? $product->id : null }}">
         <div class="form-block-wrapper border border-secondary rounded">
@@ -30,20 +30,20 @@
                 value="{{ isset($product) ? $product->cost : null }}">
         </div>
         <div class="form-block-wrapper border border-secondary rounded">
-            <input type="file" name="cover">
+            <input type="file" name="image">
         </div>
         <div class="form-block-wrapper border border-secondary rounded">
-            <select name="product_type" id="">
+            <select name="type" id="">
                 <option value="" disabled>Выберите категорию</option>
                 @foreach ($data['pTypes'] as $pType)
                     @if ($product != null)
                         @php
                             if ($pType['id'] == $product->type) {
-                                $active = 'active';
+                                $selected = 'selected';
                             }
                         @endphp
                     @endif
-                    <option value="{{ $pType['id'] }}" {{ $active }}>{{ $pType['name'] }}
+                    <option value="{{ $pType['id'] }}" {{ $selected }}>{{ $pType['name'] }}
                     </option>
                 @endforeach
             </select>

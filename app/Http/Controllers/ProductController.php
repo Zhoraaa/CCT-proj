@@ -20,12 +20,15 @@ class ProductController extends Controller
         // ]);
         // dd($request->all());
 
-
-        $fileName = time().'.'.$request->file('cover')->extension();
-        $imagePath = $request->file('cover')->storeAs('public/imgs/products', $fileName);
-        // dd($imagePath);
+        if ($request->hasFile('image')) {
+            $fileName = time() . '.' . $request->file('image')->extension();
+            $imagePath = $request->file('image')->storeAs('public/imgs/products', $fileName);
+        }
 
         if (!$request->product_id) {
+            if (!$request->hasFile('image')) {
+                $fileName = 'default.png';
+            }
             $product_id = Product::insertGetId([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -34,15 +37,34 @@ class ProductController extends Controller
                 'type' => $request->product_type
             ]);
         } else {
-            $product = Product::find($request->product_id)
-                ->update([
-                    'name' => $request->name,
-                    'description' => $request->description,
-                    'cost' => $request->cost,
-                    'image' => $fileName,
-                    'type' => $request->product_type,
-                    'updated_at'
-                ]);
+            $update['updated_at'] = null;
+            if ($request->hasFile('image')) {
+                $update['image'] = $fileName;
+            }
+
+            $toUPD = $request->toArray();
+            $product = Product::find($request->product_id);
+            // dd($toUPD);
+            $testing = $product->toArray();
+
+            foreach ($testing as $key => $item) {
+                switch ($key) {
+                    case 'id':
+                    case 'image':
+                    case 'created_at':
+                    case 'updated_at':
+                        break;
+                    default:
+                        if ($toUPD[$key] != $item) {
+                            $update[$key] = $toUPD[$key];
+                        }
+                        break;
+                }
+            }
+
+            // dd($update);
+
+            $product->update($update);
             $product_id = $request->product_id;
         }
 
