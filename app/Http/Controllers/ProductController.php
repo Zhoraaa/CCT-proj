@@ -60,7 +60,7 @@ class ProductController extends Controller
                 ->select()
                 ->whereIn('type', $types)
                 ->orderBy($request->order_by, $request->sequence)
-                ->paginate(10);
+                ->paginate(4);
         }
 
 

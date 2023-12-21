@@ -15,6 +15,7 @@ class BasketController extends Controller
         $basket = Basket::join('products', 'baskets.product_id', '=', 'products.id')
             ->join('statuses', "baskets.status", "=", "statuses.id")
             ->select('baskets.id', 'baskets.product_id', 'products.name', 'products.cost', 'statuses.name as status')
+            ->where('orderer_id', Auth::user()->id)
             ->get();
 
         return view('basket.list', compact('basket'));

@@ -46,7 +46,7 @@ class PostController extends Controller
         $posts = Post::join('users', 'posts.author_id', '=', 'users.id')
             ->select('posts.*', 'users.login as author')
             ->where('post_type_id', 1)
-            ->paginate(10);
+            ->paginate(3);
         // dd($posts);
 
         return view("post.forum", compact("posts"));

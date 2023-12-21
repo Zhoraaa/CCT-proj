@@ -4,6 +4,8 @@
     Редактирование товара
 @endsection
 
+
+
 @section('body')
     <form action="{{ @route('productSave') }}" method="POST" enctype="multipart/form-data"
         class="border border-secondary rounded m-2 p-3 form-auth">

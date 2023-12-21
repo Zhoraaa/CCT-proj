@@ -12,11 +12,12 @@ class PostFactory extends Factory
 
     public function definition()
     {
+        $users = User::get();
         return [
             'theme' => $this->faker->sentence,
             'text' => $this->faker->paragraph,
             'post_type_id' => $this->faker->randomElement([1, 2]),
-            'author_id' => User::factory(),
+            'author_id' => $this->faker->randomElement($users)->id,
             'reply_to' => function (array $attributes) {
                 return $attributes['post_type_id'] == 2 ? Post::factory() : null;
             },
